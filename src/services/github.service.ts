@@ -69,18 +69,6 @@ function totalStars(repos: GitHubRepo[]): number {
   return repos.reduce((acc, r) => acc + r.stargazers_count, 0);
 }
 
-function aggregateLanguages(reposWithLangs: Map<number, string[]>): string[] {
-  const count: Record<string, number> = {};
-  for (const langs of reposWithLangs.values()) {
-    for (const lang of langs) {
-      count[lang] = (count[lang] || 0) + 1;
-    }
-  }
-  return Object.entries(count)
-    .sort((a, b) => b[1] - a[1])
-    .map(([name]) => name);
-}
-
 function categorizeSkills(languages: string[]): SkillsData {
   const frontend: string[] = [];
   const backend: string[] = [];
@@ -153,7 +141,7 @@ function transformToProjectFormat(
     .sort((a, b) => b.stargazers_count - a.stargazers_count || new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
     .slice(0, 6);
 
-  return sorted.map((repo, index) => {
+  return sorted.map((repo) => {
     const langs = repoLanguages.get(repo.id) || (repo.language ? [repo.language] : []);
     const architecture = repo.topics?.length
       ? repo.topics.slice(0, 3).join(", ")

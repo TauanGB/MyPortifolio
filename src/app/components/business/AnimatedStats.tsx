@@ -80,7 +80,7 @@ export function AnimatedStats() {
 
   return (
     <div ref={ref} className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-      {STATS.map((stat, index) => (
+      {STATS.map((stat) => (
         <StatCard
           key={stat.label}
           value={stat.value}
