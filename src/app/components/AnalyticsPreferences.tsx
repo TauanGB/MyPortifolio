@@ -2,8 +2,10 @@ import { useState, useSyncExternalStore } from 'react';
 import { analyticsConfigured, getAnalyticsPreference, subscribeAnalyticsPreference, setAnalyticsPreference } from '../../services/analytics';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from './ui/dialog';
 
+const getServerPreference = () => null;
+
 export function AnalyticsPreferences() {
-  const preference = useSyncExternalStore(subscribeAnalyticsPreference, getAnalyticsPreference);
+  const preference = useSyncExternalStore(subscribeAnalyticsPreference, getAnalyticsPreference, getServerPreference);
   const [open, setOpen] = useState(false);
   const choose = (value: 'accepted' | 'rejected') => { setAnalyticsPreference(value); setOpen(false); };
   const choices = <div className="flex flex-wrap gap-3 mt-4">
@@ -18,14 +20,14 @@ export function AnalyticsPreferences() {
       {choices}
     </section>}
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild><button type="button" className="text-sm text-slate-400 underline underline-offset-4 hover:text-white focus-visible:outline-2 focus-visible:outline-blue-400">Privacidade e medição</button></DialogTrigger>
-      <DialogContent className="border-slate-600 bg-slate-950 text-slate-100">
+      <DialogTrigger asChild><button type="button" className="pf-privacy-trigger">Privacidade e medição</button></DialogTrigger>
+      <DialogContent className="border-slate-600 bg-slate-950 text-slate-100 max-h-[85dvh] overflow-y-auto motion-reduce:animate-none">
         <DialogTitle>Privacidade e medição</DialogTitle>
         <DialogDescription className="text-slate-300 leading-relaxed">{description}</DialogDescription>
         <p className="text-sm text-slate-300">Não enviamos nomes, emails, telefones ou mensagens nos eventos. A preferência fica armazenada neste navegador. Recusar interrompe novos eventos; não apaga dados já enviados.</p>
         <p className="text-sm text-slate-300">{!analyticsConfigured ? 'A medição está desativada neste ambiente.' : preference === 'accepted' ? 'Sua escolha atual: medição aceita.' : preference === 'rejected' ? 'Sua escolha atual: medição recusada.' : 'Você ainda não escolheu.'}</p>
         {analyticsConfigured && choices}
-        <a href="https://policies.google.com/privacy?hl=pt-BR" target="_blank" rel="noreferrer" className="text-sm text-blue-400 underline">Política de privacidade do Google</a>
+        <a href="https://policies.google.com/privacy?hl=pt-BR" target="_blank" rel="noopener noreferrer" className="text-sm text-blue-400 underline">Política de privacidade do Google</a>
       </DialogContent>
     </Dialog>
   </>;

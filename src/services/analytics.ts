@@ -60,7 +60,7 @@ export function createAnalyticsController(win: AnalyticsWindow, doc: Document, i
       win.gtag?.('event', 'page_view', {
         page_location: sanitizeUrl(win.location.href),
         page_referrer: sanitizeUrl(doc.referrer),
-        page_title: 'Tauan Gomes | Produtos digitais',
+        page_title: 'Tauan Gomes | Desenvolvimento de software',
       });
     }
   }
